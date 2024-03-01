@@ -61,9 +61,49 @@ class mal:
       "data": (x) }
     return json.dumps(charactersInfo)
 
-    
+  def search(self,q,page):## Search Anime BY Name ##
+    url = f"{self.BaseUrl}/anime.php?q={q}&cat=anime&&show={(page-1)*50}"
+    data = get(url)
+    soup = BeautifulSoup(data.text, "html.parser")
+    last_page = 20 
+    animes = soup.select("#content div.list table tr")
+    del animes[0]
+    dataDict = {
+      "pagination":{
+        "next_page": True if page < last_page else False,
+        "prev_page": True if page > 1 else False,
+        "page": page
+      },
+      "items": [{
+          "title": anime.select(".title a")[0].text,
+          "mal_id": int(anime.select(".picSurround a")[0]["href"].replace("https://myanimelist.net/anime/","").split("/")[0]),
+          "type": anime.select(".ac")[0].text.strip(" \n"),
+          "url": anime.select(".picSurround a")[0]["href"],
+          "imgs": {"small": (anime.select(".picSurround img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x","")),"large": "".join((anime.select(".picSurround img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x","")).split("r/100x140/")).split("?s=")[0]},
+          "score": (anime.select(".ac")[2].text.strip(" \n"))
+        } for anime in animes]}
+    return json.dumps(dataDict)
+     
+  def ajaxSearch(self, q): 
+    url = f"{self.BaseUrl}/anime.php?q={q}&cat=anime"
+    data = get(url)
+    soup = BeautifulSoup(data.text, "html.parser")
+    animes = soup.select("#content div.list table tr")
+    del animes[0]
+    dataDict = [{
+          "title": anime.select(".title a")[0].text,
+          "type": anime.select(".ac")[0].text.strip(" \n"),
+          "url": anime.select(".picSurround a")[0]["href"],
+          "img": anime.select(".picSurround img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x",""),
+        } for anime in animes]
+    # return json.dumps(dataDict)
 
 
+##   type "", "airing", "upcoming", "tv", "movie", "ova", "ona", "special", "bypopularity", "favorite"  
+##  url  https://myanimelist.net/topanime.php
+def topAnime():
+  pass
 
-print(mal().animeCharacters(52299))
+if __name__ == "__main__":
+  print(mal().ajaxSearch("naruto"))
 
