@@ -96,14 +96,40 @@ class mal:
           "url": anime.select(".picSurround a")[0]["href"],
           "img": anime.select(".picSurround img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x",""),
         } for anime in animes]
-    # return json.dumps(dataDict)
+    return json.dumps(dataDict)
 
 
 ##   type "", "airing", "upcoming", "tv", "movie", "ova", "ona", "special", "bypopularity", "favorite"  
 ##  url  https://myanimelist.net/topanime.php
-def topAnime():
-  pass
+  def topAnime(self, type, page):
+    url = f"{self.BaseUrl}/topanime.php?type={type}"
+    data = get(url)
+    soup = BeautifulSoup(data.text, "html.parser")
+    next = soup.select(".pagination .next")
+    prev = soup.select(".pagination .prev")
+    pagination = {
+      "next_page": (False if len(next) == 0 else True),
+      "prev_page": (False if len(prev) == 0 else True),
+      "page": page
+    }
+    animes = soup.select(".ranking-list")
+    data_dict = {
+      "pagination" : pagination,
+      "items": [
+        {
+          "title": anime.select(".anime_ranking_h3")[0].text,
+          "mal_id": anime.select("a")[0]["href"].replace("https://myanimelist.net/","").split("/")[1],
+          "type": anime.select("a")[0]["href"].replace("https://myanimelist.net/","").split("/")[0],
+          "url": anime.select("a")[0]["href"],
+          "imgs": {"small": (anime.select("img")[0]["data-srcset"].split(", ")[1]).replace(" 2x",""),"large": "".join((anime.select("img")[0]["data-srcset"].split(", ")[1]).replace(" 2x","").split("r/100x140/")).split("?s=")[0]},
+          "rank": anime.select(".top-anime-rank-text")[0].text,
+          "score": anime.select("td.score.ac.fs14 > div > span")[0].text
+        } for anime in animes
+      ]
+    }
+    return json.dumps(data_dict)
+  
 
 if __name__ == "__main__":
-  print(mal().ajaxSearch("naruto"))
+  print(mal().topAnime("",1))
 
