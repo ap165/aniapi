@@ -129,7 +129,14 @@ class mal:
     }
     return json.dumps(data_dict)
   
+  def relatedAnime(self, url):   ## get related animes from aniDB url ##
+    data = get(url)
+    soup = BeautifulSoup(data.text, "html.parser")
+    relatedAnilist = soup.select("#relations_direct")
+    return soup   ##  ** 403 Forbidden **  ##
+  
 
 if __name__ == "__main__":
-  print(mal().topAnime("",1))
+  print(mal().relatedAnime("https://anidb.net/anime/4880"))
 
+##relations_direct
