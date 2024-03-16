@@ -10,7 +10,6 @@ class gogo:
     https://gogoanime.onl/api/anime/suggest?keyword=naruto
     https://gogoanime.quest/api/anime/suggest?keyword=naru
 
-    
     https://ww3.gogoanimes.fi
     https://gogoanime.onl
     https://gogoanime.quest
