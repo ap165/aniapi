@@ -34,4 +34,9 @@ def anime():
     id = (request.args.get("id"))
     data = mal().getAnimeById(id)
     return jsonify(data)
-# @api.route("/anime/<")
+
+@api.route("/characters")
+def character():
+    id = request.args.get("id")
+    data = mal().animeCharacters(id)
+    return jsonify(data)

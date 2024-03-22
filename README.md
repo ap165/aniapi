@@ -38,3 +38,25 @@ type - ```airing```, ```upcoming```, `tv`, `movie`, `ova`, `ona`, `special`, `by
 ```bash
 http://localhost:5000/api/topAnimes?type=airing&page=1
 ```
+
+## Anime
+url:- <br>
+   ``` /api/anime```
+
+params:- <br>
+    ```id= [anime-id]```
+
+```bash
+http://localhost:5000/api/anime?id=51836
+```
+
+## Character
+url:- <br>
+   ``` /api/characters```
+
+params:- <br>
+    ```id= [anime-id]```
+
+```bash
+http://localhost:5000/api/characters?id=51836
+```
