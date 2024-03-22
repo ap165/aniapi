@@ -20,7 +20,7 @@ def ajaxSearch():
     json_data = mal().ajaxSearch(q)
     return jsonify(json_data)
 
-##   type "", "airing", "upcoming", "tv", "movie", "ova", "ona", "special", "bypopularity", "favorite"  
+##   type "",   
 ##  url  https://myanimelist.net/topanime.php
 @api.route("/topAnimes")
 def topAnimes():
@@ -29,4 +29,9 @@ def topAnimes():
     data = mal().topAnime(type, page)
     return jsonify(data)
 
+@api.route("/anime")
+def anime():
+    id = (request.args.get("id"))
+    data = mal().getAnimeById(id)
+    return jsonify(data)
 # @api.route("/anime/<")

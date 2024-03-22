@@ -25,3 +25,13 @@ params:- <br>
 ```bash
 http://localhost:5000/api/ajax/search?q=naruto
 ```
+
+## Top Animes
+
+url:- <br>
+```/topAnimes```
+
+params:- <br>
+type= ["```airing```", "```upcoming```", "`tv`", "`movie`", "`ova`", "`ona`", "`special`", "`bypopularity`", "`favorite`"] <br>
+
+page = `[page-no]`

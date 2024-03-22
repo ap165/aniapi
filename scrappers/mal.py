@@ -21,7 +21,7 @@ class mal:
        if len(x) != 0 and x[0]["value"] != "":
         songs.append(x[0]["value"].split("/track/")[1])
     jsonData = {
-      "mal_id" : id,
+      "mal_id" : int(id),
       "title": soup.select(".title-name")[0].text,
       "title_eng": soup.select(".title-english")[0].text,
       "url" : f"{self.BaseUrl}/anime/{id}",
