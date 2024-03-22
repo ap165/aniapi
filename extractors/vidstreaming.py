@@ -90,5 +90,5 @@ def getEpStreamingLink(iframeUrl):
   decryptedJson = decrypt_encrypted_response(response.json()["data"])
   return json.loads(decryptedJson)
 
-if __name__ == "__main__":
-  print(getEpStreamingLink("https://embtaku.pro/streaming.php?id=MjU1OTA=&title=Naruto+Episode+205"))
+# if __name__ == "__main__":
+#   print(getEpStreamingLink("https://embtaku.pro/streaming.php?id=MjU1OTA=&title=Naruto+Episode+205"))
