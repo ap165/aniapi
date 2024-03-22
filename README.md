@@ -32,6 +32,9 @@ url:- <br>
 ```/topAnimes```
 
 params:- <br>
-type= ["```airing```", "```upcoming```", "`tv`", "`movie`", "`ova`", "`ona`", "`special`", "`bypopularity`", "`favorite`"] <br>
+type - ```airing```, ```upcoming```, `tv`, `movie`, `ova`, `ona`, `special`, `bypopularity`, `favorite` <br>
 
-page = `[page-no]`
+`page= [page-no]`
+```bash
+http://localhost:5000/api/topAnimes?type=airing&page=1
+```
