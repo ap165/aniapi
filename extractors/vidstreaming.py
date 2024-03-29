@@ -76,14 +76,10 @@ def decrypt_encrypted_response(response_data):
   decrypted_text = unpadded_data.decode('utf-8')
   return decrypted_text
 
-def getEpStreamingLink(iframeUrl):
-  # if "typesub" in iframeUrl:
-  #   pass
-  # else:
-  #   iframeUrl = iframeUrl + "&typesub=DUB" 
-  urldict = urlParser(iframeUrl)
+def getM3U8url(vodstreamingUrl):
+  urldict = urlParser(vodstreamingUrl)
   USER_AGENT = request_headers()["User-Agent"]
-  encrypted_params = generate_encrypted_parameters(iframeUrl)
+  encrypted_params = generate_encrypted_parameters(vodstreamingUrl)
   request_url = f"{urldict['protocol']}://{urldict['hostname']}/encrypt-ajax.php?{encrypted_params}"
   headers = {"User-Agent" : USER_AGENT,"X-Requested-With": "XMLHttpRequest"}
   response = requests.get(request_url,headers = headers)
