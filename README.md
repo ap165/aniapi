@@ -44,7 +44,7 @@ url:- <br>
    ``` /api/anime```
 
 params:- <br>
-    ```id= [anime-id]```
+   ```id= [anime-id]```
 
 ```bash
 http://localhost:5000/api/anime?id=51836
@@ -60,3 +60,49 @@ params:- <br>
 ```bash
 http://localhost:5000/api/characters?id=51836
 ```
+
+## Search From gogoAnime
+url:- <br>
+   ``` /api/search/gogo```
+
+params:- <br>
+    ```q= [anime-name]```
+
+```bash
+http://localhost:5000/api/search/gogo?q=naruto
+```
+
+## Get episodes from GOGOAnime
+url:- <br>
+   ``` /api/anime/epis```
+
+params:- <br>
+    ```gogoid= [gogo-anime-id]```
+
+```bash
+http://localhost:5000/api/anime/epis?gogoid=naruto-shippuden
+```
+
+
+## Get episode servers
+url:- <br>
+   ```/api/anime/ep```
+
+params:- <br>
+    ```epid= [gogo-anime-epid]```
+
+```bash
+http://localhost:5000/api/anime/ep?epid=naruto-shippuden-episode-1
+```
+
+## Extract M3U8 from Vidstreaming url
+url:- <br>
+   ```/api/extractors/vidstreaming```
+
+params:- <br>
+    ```url= [vidstreaming-url]```
+
+```bash
+http://localhost:5000/api/extractors/vidstreaming?url=https://embtaku.pro/streaming.php?id=MjIwMQ==&title=Naruto+Shippuden+Episode+1
+```
+
