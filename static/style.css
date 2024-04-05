@@ -12,7 +12,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #0d0d0d;
     color: #fff;
     padding: 1rem;
     text-align: center;
@@ -54,7 +54,11 @@ ul {
 
 ul li {
     margin-bottom: 10px;
-    color: #444;
+    color: #060606;
 }
 
 /* Customize as needed */
+
+a{
+    color: rgb(0, 106, 255);
+}

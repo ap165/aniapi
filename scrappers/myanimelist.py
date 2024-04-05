@@ -123,7 +123,8 @@ class mal:
           "url": anime.select("a")[0]["href"],
           "imgs": {"small": (anime.select("img")[0]["data-srcset"].split(", ")[1]).replace(" 2x",""),"large": "".join((anime.select("img")[0]["data-srcset"].split(", ")[1]).replace(" 2x","").split("r/100x140/")).split("?s=")[0]},
           "rank": anime.select(".top-anime-rank-text")[0].text,
-          "score": anime.select("td.score.ac.fs14 > div > span")[0].text
+          "score": anime.select("td.score.ac.fs14 > div > span")[0].text,
+          "otherInfo": anime.select(".information")[0].text.strip()
         } for anime in animes
       ]
     }
