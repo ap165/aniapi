@@ -2,9 +2,11 @@ from flask import Blueprint, request, jsonify
 from scrappers.myanimelist import mal
 from scrappers.gogoanime import gogo
 from extractors.vidstreaming import getM3U8url
+from flask_cors import CORS
 import json
 
 api = Blueprint('api', __name__)
+CORS(api)
 
 @api.route('/')
 def index():
