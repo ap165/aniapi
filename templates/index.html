@@ -1,103 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="theme-color" content="#201f31" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#201f31" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#201f31">
-    <meta name="msapplication-navbutton-color" content="#201f31">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#201f31">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static', filename='apple-touch-icon.png')}}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='favicon-32x32.png')}}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon-16x16.png')}}">
-    <link rel="mask-icon" href="{{url_for('static', filename='safari-pinned-tab.svg')}}" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@40,700,0,200" />
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}?v=2">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}?v=2">
-    <title>Skypiea</title>
+    <title>AniAPI</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 </head>
-
 <body>
-    <div class="sidebar_menu">
-        <div class="close_menu">
-            <button><span class="material-symbols-rounded">arrow_back_ios</span> Close Menu</button>
-        </div>
-        <div class="sidebar_menu-links">
-            <a href="#Home"><button class="sidebar_menu-btn">Home</button></a>
-            <a href="#MostPopular"><button class="sidebar_menu-btn">Most Popular</button></a>
-            <a href="#Movies"><button class="sidebar_menu-btn">Movies</button></a>
-            <a href="#TVSeries"><button class="sidebar_menu-btn">TV Series</button></a>
-            <a href="#OVAs"><button class="sidebar_menu-btn">OVAs</button></a>
-            <a href="#ONAs"><button class="sidebar_menu-btn">ONAs</button></a>
-        </div>
-
-    </div>
     <header>
-        <nav class="nav-bar fx fx-center">
-            <h1 class="nav_title fx fx-center"><button class="sidebar"><span
-                        class="material-symbols-rounded">menu</span></button> &nbsp;<img class="nav-logo"
-                    src="{{url_for('static', filename='img/logo-small.png')}}" alt=""> <span
-                    style="color: #8f45ed;font-weight: bolder;">SKY</span>PIEA</h1>
-            <div class="nav_btns">
-                <button class="search"><span class="material-symbols-rounded">search</span></button>
-
-            </div>
-        </nav>
-
+        <h1>AniAPI Documentation</h1>
+        <a href="https://github.com/codewithap/aniapi/blob/main/README.md">Read Documentation</a>
     </header>
-    <section id="body">
-        <div class="slideShow">
-            <div class="slider"><button class="prev slideShowBtn" onclick="prev()"><span
-                        class="material-symbols-rounded">
-                        arrow_back_ios
-                    </span></button><button class="next slideShowBtn" onclick="next()"><span
-                        class="material-symbols-rounded">
-                        arrow_forward_ios
-                    </span></button>
-            </div>
-        </div>
 
-        <div class="trending">
-            <h2><span>Trending Now</span><small><a href="#/trending">View All</a></small></h2>
-            <div class="button">
-                <button class="prev btnTransparent" onclick="prevTrending()"><span class="material-symbols-rounded">
-                        arrow_back_ios
-                    </span></button><button class="next btnTransparent" onclick="nextTrending()"><span
-                        class="material-symbols-rounded">
-                        arrow_forward_ios
-                    </span></button>
-            </div>
-            <div class="cards">
+    <main>
+        
+    </main>
 
-            </div>
-        </div>
-
-        <div class="trending popular">
-            <h2><span>Most Popular</span><small><a href="#/Popular">View All</a></small></h2>
-            <div class="button">
-                <button class="prev btnTransparent" onclick="prevPopular()"><span class="material-symbols-rounded">
-                        arrow_back_ios
-                    </span></button><button class="next btnTransparent" onclick="nextPopular()"><span
-                        class="material-symbols-rounded">
-                        arrow_forward_ios
-                    </span></button>
-            </div>
-            <div class="cards">
-
-            </div>
-        </div>
-
-    </section>
     <footer>
-
+        <p>© 2024 AniAPI. All rights reserved.</p>
     </footer>
-    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+
+    <script>
+    </script>
 </body>
 </html>
