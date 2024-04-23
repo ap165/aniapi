@@ -23,7 +23,7 @@ class mal:
     jsonData = { 
       "mal_id" : int(id),
       "title": soup.select(".title-name")[0].text,
-      "title_eng": soup.select(".title-english")[0].text,
+      # "title_eng": soup.select(".title-english")[0].text,
       "url" : f"{self.BaseUrl}/anime/{id}",
       "imgs": {
             "jpg":{
