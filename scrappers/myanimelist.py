@@ -19,7 +19,7 @@ class mal:
     songs = []
     for x in songsarr:
        if len(x) != 0 and x[0]["value"] != "":
-        songs.append(x[0]["value"]) #.split("/track/")[1])
+        songs.append(x[0]["value"].split("/track/")[1])
     jsonData = { 
       "mal_id" : int(id),
       "title": soup.select(".title-name")[0].text,
