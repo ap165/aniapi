@@ -54,9 +54,6 @@ class gogo:
     info = {
         "title": html.select(".anime_info_body h1")[0].text,
         "thumbnail": html.select(".anime_info_body img")[0]["src"],
-        "released": html.select(".anime_info_body .type")[3].text.replace("Released: ", ""),
-        "status": status,
-        "other_name": html.select(".anime_info_body .type")[5].text.replace("Other name: ", ""),
         "episodes": eparr
     }
     return info
