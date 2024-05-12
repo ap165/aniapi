@@ -9,17 +9,37 @@ class mal:
   def getAnimeById(self,id): ## Anime info by ID ##
     data = get(self.BaseUrl + f"/anime/{id}")
     soup = BeautifulSoup(data.text, "html.parser")
-    songsarr = []
-    for x in soup.select(".di-tc table tr"):
-      if len(x.select("td")) != 3:
-        pass
-      else:
-        song = (x.select("td"))[1].select("input")
-        songsarr.append(song)
-    songs = []
-    for x in songsarr:
-       if len(x) != 0 and x[0]["value"] != "":
-        songs.append(x[0]["value"].split("/track/")[1])
+
+    """
+    <tr>
+    
+    <td width="8%"> <div class="oped-preview-button oped-preview-button-gray"></div></td>
+    
+    <td width="84%"><span class="theme-song-index">1:</span> "memories"<span class="theme-song-artist"> by Maki Otsuki (大槻真希)</span> <span class="theme-song-episode">(eps 1-30,808,968)</span><input id="spotify_url_77768" type="hidden" value=""/>
+    <input id="apple_url_77768" type="hidden" value=""/>
+    <input id="amazon_url_77768" type="hidden" value=""/>
+    <input id="youtube_url_77768" type="hidden" value=""/>
+    </td>
+    
+    <td width="8%">
+    <div class="oped-video-button"> <div class="oped-video-button-gray"><i class="malicon malicon-movie-mv"></i></div></div>
+    </td>
+    </tr>
+    """
+    songs = soup.select(".js-theme-songs")
+    opening = songs[0].select("table")[1].select("tr")
+    ending = songs[1].select("table")[0].select("tr")
+    
+    openingSongs = [{"name" : x.select("td")[1].text, 
+                     "spotify": x.select("td")[1].select("input")[0]["value"],
+                     "youtube": x.select("td")[1].select("input")[3]["value"]} 
+                   for x in opening]
+    
+    endingSongs = [{"name" : x.select("td")[1].text, 
+                     "spotify": x.select("td")[1].select("input")[0]["value"],
+                     "youtube": x.select("td")[1].select("input")[3]["value"]} 
+                   for x in ending]
+
     jsonData = { 
       "mal_id" : int(id),
       "title": soup.select(".title-name")[0].text,
@@ -41,33 +61,40 @@ class mal:
       "description": soup.findAll("p", {"itemprop" : "description"})[0].text, 
       "info": {x.select(".dark_text")[0].text.replace(":","").strip().lower() : x.text.replace(x.select('.dark_text')[0].text,"").strip() for x in soup.select(".borderClass .leftside .spaceit_pad")},
       "external_links": [{"name": x.text.strip().lower(), "data" : x["href"]} for x in soup.select(".external_links a")],
-      "theme_songs": songs
+      "theme_songs": {
+        "opening": openingSongs,
+        "ending": endingSongs
+      }
     }
     return json.dumps(jsonData)
   
-  def animeCharacters(self, malid): ## Anime Charactors & voice Actors ##
+  def animeCharacters(self, malid):
     data = get(f"{self.BaseUrl}/anime/{malid}/animeName/characters")
-    soup = BeautifulSoup(data.text, "html.parser")
+    soup = BeautifulSoup(data.text, "lxml")
     charactersList = soup.select(".anime-character-container table tr")
     x = []
+
     for character in charactersList:
-      cName = character.select(".js-chara-roll-and-name")
-      if len(cName) != 0:
-        voice_actors = character.select(".js-anime-character-va .js-anime-character-va-lang")
-        cINfoJson ={
-          "name" : cName[0].text.strip(" \n").split("_")[1],
-          "img": str(character.select(".ac img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x","")),
-          "type" : "main" if cName[0].text.strip(" \n").split("_")[0] == "m" else "supporting",
-          "voice_actors" : [{
-            "name": x.select('td')[0].select(".spaceit_pad")[0].text.strip("\n"),
-            "img": x.select('td')[1].select("img")[0]["data-srcset"].split(", ")[1].replace(" 2x",""),
-            "lang" : x.select(".js-anime-character-language")[0].text.strip("\n ") 
-                }for x in voice_actors]}
-        x.append(cINfoJson)
+        cName = character.select(".js-chara-roll-and-name")
+        if len(cName) != 0:
+            voice_actors = character.select(".js-anime-character-va .js-anime-character-va-lang")
+            cINfoJson = {
+                "name": cName[0].text.strip(" \n").split("_")[1],
+                "img": str(character.select(".ac img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x", "")).split("?s=")[0].replace("https://cdn.myanimelist.net/r/84x124/images", ""),
+                "type": "main" if cName[0].text.strip(" \n").split("_")[0] == "m" else "supporting",
+                "voice_actors": [{
+                    "name": x.select('td')[0].select(".spaceit_pad")[0].text.strip("\n"),
+                    "img": x.select('td')[1].select("img")[0]["data-srcset"].split(", ")[1].replace(" 2x", "").split("?s=")[0].replace("https://cdn.myanimelist.net/r/84x124/images/", ""),
+                    "lang": x.select(".js-anime-character-language")[0].text.strip("\n ")
+                } for x in voice_actors]
+            }
+            x.append(cINfoJson)
+
     charactersInfo = {
-      "mal_id": malid,
-      "name": soup.select(".title-name")[0].text,
-      "data": (x) }
+        "mal_id": malid,
+        "name": soup.select(".title-name")[0].text,
+        "data": x
+    }
     return json.dumps(charactersInfo)
 
   def search(self,q,page):## Search Anime BY Name ##

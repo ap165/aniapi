@@ -19,7 +19,7 @@ class gogo:
   
   def search(self,query): ###  get anime by name  ###
     data = requests.get(f"{self.BASE_AJAX_URL}/site/loadAjaxSearch?keyword={query}")
-    soup = BeautifulSoup(json.loads(data.text)["content"], "html.parser")
+    soup = BeautifulSoup(json.loads(data.text)["content"], "lxml")
     json_data = [
         {
             "title": title.text,
@@ -36,13 +36,13 @@ class gogo:
   def get_anime_info(self, gogoid): ### get anime imfo from gogo id ###
     base_url = self.BASE_URL
     data = requests.get(f"{base_url}/category/{gogoid}")
-    html = BeautifulSoup(data.text, "html.parser")
+    html = BeautifulSoup(data.text, "lxml")
 
     anime_id = html.select("#movie_id")[0]["value"]
     anime_name = html.select("#alias_anime")[0]["value"]
 
     epis_data = requests.get(f"{self.BASE_AJAX_URL}/ajax/load-list-episode?ep_start=0&ep_end=9999&id={anime_id}&alias={anime_name}")
-    epis = BeautifulSoup(epis_data.content, 'html.parser')
+    epis = BeautifulSoup(epis_data.content, 'lxml')
     eparr = [x["href"].replace(" /", "") for x in epis.select("a")][::-1]
 
     genre_links = html.select(".anime_info_body .type")[2].select("a")
@@ -60,7 +60,7 @@ class gogo:
   
   def get_episode_servers(self,gogoEpId):
     data = requests.get(f"{self.BASE_URL}/{gogoEpId}")
-    soup = BeautifulSoup(data.text,"html.parser")
+    soup = BeautifulSoup(data.text,"lxml")
     servers = [{"video": x["data-video"],"name": x.text.replace("Choose this server","").replace("\n","")} for x in soup.select(".anime_muti_link ul li a")]
     return json.dumps(servers, indent = 2)
     

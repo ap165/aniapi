@@ -3,3 +3,4 @@ requests
 bs4
 pycryptodome
 Flask-Cors==3.0.10
+lxml
