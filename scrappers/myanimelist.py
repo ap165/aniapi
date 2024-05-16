@@ -10,22 +10,6 @@ class mal:
     data = get(self.BaseUrl + f"/anime/{id}")
     soup = BeautifulSoup(data.text, "html.parser")
 
-    """
-    <tr>
-    
-    <td width="8%"> <div class="oped-preview-button oped-preview-button-gray"></div></td>
-    
-    <td width="84%"><span class="theme-song-index">1:</span> "memories"<span class="theme-song-artist"> by Maki Otsuki (大槻真希)</span> <span class="theme-song-episode">(eps 1-30,808,968)</span><input id="spotify_url_77768" type="hidden" value=""/>
-    <input id="apple_url_77768" type="hidden" value=""/>
-    <input id="amazon_url_77768" type="hidden" value=""/>
-    <input id="youtube_url_77768" type="hidden" value=""/>
-    </td>
-    
-    <td width="8%">
-    <div class="oped-video-button"> <div class="oped-video-button-gray"><i class="malicon malicon-movie-mv"></i></div></div>
-    </td>
-    </tr>
-    """
     songs = soup.select(".js-theme-songs")
     opening = songs[0].select("table")[1].select("tr")
     ending = songs[1].select("table")[0].select("tr")
@@ -39,6 +23,11 @@ class mal:
                      "spotify": x.select("td")[1].select("input")[0]["value"],
                      "youtube": x.select("td")[1].select("input")[3]["value"]} 
                    for x in ending]
+
+    related_animes = soup.select(".anime_detail_related_anime tr")
+    related_animes_json = [{"name" : x.select("td")[0].text.replace(":","").lower(),
+                            "list": [ {"name": y.text, "url": y["href"]} for y in (x.select("td")[1].select("a"))]
+                    }  for x in related_animes]
 
     jsonData = { 
       "mal_id" : int(id),
@@ -61,6 +50,7 @@ class mal:
       "description": soup.findAll("p", {"itemprop" : "description"})[0].text, 
       "info": {x.select(".dark_text")[0].text.replace(":","").strip().lower() : x.text.replace(x.select('.dark_text')[0].text,"").strip() for x in soup.select(".borderClass .leftside .spaceit_pad")},
       "external_links": [{"name": x.text.strip().lower(), "data" : x["href"]} for x in soup.select(".external_links a")],
+      "related_animes": related_animes_json,
       "theme_songs": {
         "opening": openingSongs,
         "ending": endingSongs
@@ -68,6 +58,25 @@ class mal:
     }
     return json.dumps(jsonData)
   
+
+  ## offset = 100, 200
+  def episInfo(self, id, offset):
+    url= f"{self.BaseUrl}/anime/{id}/name/episode?offset={offset}"
+    data = get(url)
+    soup = BeautifulSoup(data.text, "html.parser")
+    epis = soup.select(".js-watch-episode-list tbody tr")
+
+    epis_info_json = [{"epNo": int(x.select(".episode-number")[0].text),
+                       "title": x.select(".episode-title a")[0].text,
+                       "aired": x.select(".episode-aired")[0].text,
+                       "link": x.select(".episode-title a")[0]["href"],
+                       "isFiller": True if len(x.select(".icon-episode-type-bg")) != 0 else False
+                       }
+                      for x in epis]
+
+    return json.dumps(epis_info_json)
+
+
   def animeCharacters(self, malid):
     data = get(f"{self.BaseUrl}/anime/{malid}/animeName/characters")
     soup = BeautifulSoup(data.text, "lxml")
@@ -186,7 +195,9 @@ class mal:
     }
     return json.dumps(data_dict)
   
-  def relatedAnime(self, url):   ## get related animes from aniDB url ##
+
+
+  def relatedAnime(self, url):   ## get related animes ##
     data = get(url)
     soup = BeautifulSoup(data.text, "html.parser")
     relatedAnilist = soup.select("#relations_direct")

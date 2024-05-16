@@ -48,6 +48,14 @@ def character():
     data = mal().animeCharacters(id)
     return json.loads(data)
 
+@api.route("/info/epis")
+def epinfo():
+    id = request.args.get("id")
+    offset =  int(request.args.get("offset"))
+    data = mal().episInfo(id, offset)
+    return json.loads(data)
+    
+
 ################# GOGO #####################
 @api.route("/search/gogo") ## q = animeName
 def gogoSearch():

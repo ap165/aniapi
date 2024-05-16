@@ -61,6 +61,18 @@ params:- <br>
 http://localhost:5000/api/characters?id=51836
 ```
 
+## Episodes Info
+url:- <br>
+   ``` /api/info/epis```
+
+params:- <br>
+    ```id= [anime-id]```
+    ```offsset= ```
+
+```bash
+http://localhost:5000/api/info/epis?id=21&offset=0
+```
+
 ## Search From gogoAnime
 url:- <br>
    ``` /api/search/gogo```
