@@ -11,9 +11,10 @@
         "dest": "main.py"
       }
     ],
+
     "functions": {
       "app/**/*.py": {
         "maxDuration": 30
       }
     }
-  }
+}

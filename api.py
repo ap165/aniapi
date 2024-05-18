@@ -13,7 +13,7 @@ def index():
     return "This is an example app"     
 
 
-###################   MAL   #####################
+###################   MAL   ######################
 @api.route("/search")
 def search():
     q = request.args.get("q") ## anime name
