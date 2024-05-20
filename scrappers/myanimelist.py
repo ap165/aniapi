@@ -77,6 +77,25 @@ class mal:
     return json.dumps(epis_info_json)
 
 
+
+# <tr class="js-anime-character-va-lang">
+# <td align="right" nowrap="" style="padding: 0 4px;" valign="top">
+# <div class="spaceit_pad">
+# <a href="https://myanimelist.net/people/9684/Susumu_Akagi">Akagi, Susumu</a>
+# </div>
+# <div class="spaceit_pad js-anime-character-language" style="color: #787878;">
+#                   Japanese
+#                 </div>
+# </td>
+# <td valign="top">
+# <div class="picSurround">
+# <a href="https://myanimelist.net/people/9684/Susumu_Akagi">
+# <img alt="Akagi, Susumu" class="lazyload" data-src="https://cdn.myanimelist.net/r/42x62/images/voiceactors/1/79885.jpg?s=24f06cc2568f5fc284b2304856f14bee" data-srcset="https://cdn.myanimelist.net/r/42x62/images/voiceactors/1/79885.jpg?s=24f06cc2568f5fc284b2304856f14bee 1x, https://cdn.myanimelist.net/r/84x124/images/voiceactors/1/79885.jpg?s=591384c994153f686b31a1b500987a61 2x" height="62" width="42"/>
+# </a>
+# </div>
+# </td>
+# </tr>
+
   def animeCharacters(self, malid):
     data = get(f"{self.BaseUrl}/anime/{malid}/animeName/characters")
     soup = BeautifulSoup(data.text, "lxml")
@@ -85,26 +104,31 @@ class mal:
 
     for character in charactersList:
         cName = character.select(".js-chara-roll-and-name")
-        if len(cName) != 0:
-            voice_actors = character.select(".js-anime-character-va .js-anime-character-va-lang")
+        if cName:
+            voice_actorInfo = character.select(".js-anime-character-va .js-anime-character-va-lang")
+            voice_actor_json = {}
+            if voice_actorInfo:
+                voice_actor_json = {
+                    "name": voice_actorInfo[0].select_one('td .spaceit_pad').text.strip(),
+                    "img": voice_actorInfo[0].select_one('td img')['data-srcset'].split(", ")[1].replace(" 2x", "").split("?s=")[0].replace("https://cdn.myanimelist.net/r/84x124/images/", ""),
+                    "lang": voice_actorInfo[0].select_one('.js-anime-character-language').text.strip()
+                }
+
             cINfoJson = {
-                "name": cName[0].text.strip(" \n").split("_")[1],
-                "img": str(character.select(".ac img")[0]["data-srcset"].split(" 1x, ")[1].replace(" 2x", "")).split("?s=")[0].replace("https://cdn.myanimelist.net/r/84x124/images", ""),
-                "type": "main" if cName[0].text.strip(" \n").split("_")[0] == "m" else "supporting",
-                "voice_actors": [{
-                    "name": x.select('td')[0].select(".spaceit_pad")[0].text.strip("\n"),
-                    "img": x.select('td')[1].select("img")[0]["data-srcset"].split(", ")[1].replace(" 2x", "").split("?s=")[0].replace("https://cdn.myanimelist.net/r/84x124/images/", ""),
-                    "lang": x.select(".js-anime-character-language")[0].text.strip("\n ")
-                } for x in voice_actors]
+                "name": cName[0].text.strip().split("_")[1],
+                "img": character.select_one(".ac img")["data-srcset"].split(" 1x, ")[1].replace(" 2x", "").split("?s=")[0].replace("https://cdn.myanimelist.net/r/84x124/images", ""),
+                "type": "main" if cName[0].text.strip().split("_")[0] == "m" else "supporting",
+                "voice_actors": voice_actor_json
             }
             x.append(cINfoJson)
 
     charactersInfo = {
         "mal_id": malid,
-        "name": soup.select(".title-name")[0].text,
+        "name": soup.select_one(".title-name").text,
         "data": x
     }
     return json.dumps(charactersInfo)
+
 
   def search(self,q,page):## Search Anime BY Name ##
     url = f"{self.BaseUrl}/anime.php?q={q}&cat=anime&&show={(page-1)*50}"
