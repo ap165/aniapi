@@ -24,10 +24,12 @@ class mal:
                      "youtube": x.select("td")[1].select("input")[3]["value"]} 
                    for x in ending]
 
-    related_animes = soup.select(".anime_detail_related_anime tr")
-    related_animes_json = [{"name" : x.select("td")[0].text.replace(":","").lower(),
-                            "list": [ {"name": y.text, "url": y["href"]} for y in (x.select("td")[1].select("a"))]
-                    }  for x in related_animes]
+    related_animes = soup.select(".related-entries .entries-tile .entry")
+    related_animes_json = [{"type": x.select_one(".relation").text,
+  "img": x.select_one(".image img")["data-src"],
+  "link": x.select_one(".image a")["href"]}
+ for x in related_animes if len(str(x)) > 40]
+    print(related_animes_json)
 
     jsonData = { 
       "mal_id" : int(id),
