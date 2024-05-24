@@ -26,10 +26,10 @@ class mal:
 
     related_animes = soup.select(".related-entries .entries-tile .entry")
     related_animes_json = [{"type": x.select_one(".relation").text,
-  "img": x.select_one(".image img")["data-src"],
-  "link": x.select_one(".image a")["href"]}
- for x in related_animes if len(str(x)) > 40]
-    print(related_animes_json)
+                            "img": x.select_one(".image img")["data-src"],
+                            "link": x.select_one(".image a")["href"],
+                            "name": x.select_one(".title").text}
+                          for x in related_animes if len(str(x)) > 40]
 
     jsonData = { 
       "mal_id" : int(id),
@@ -78,25 +78,6 @@ class mal:
 
     return json.dumps(epis_info_json)
 
-
-
-# <tr class="js-anime-character-va-lang">
-# <td align="right" nowrap="" style="padding: 0 4px;" valign="top">
-# <div class="spaceit_pad">
-# <a href="https://myanimelist.net/people/9684/Susumu_Akagi">Akagi, Susumu</a>
-# </div>
-# <div class="spaceit_pad js-anime-character-language" style="color: #787878;">
-#                   Japanese
-#                 </div>
-# </td>
-# <td valign="top">
-# <div class="picSurround">
-# <a href="https://myanimelist.net/people/9684/Susumu_Akagi">
-# <img alt="Akagi, Susumu" class="lazyload" data-src="https://cdn.myanimelist.net/r/42x62/images/voiceactors/1/79885.jpg?s=24f06cc2568f5fc284b2304856f14bee" data-srcset="https://cdn.myanimelist.net/r/42x62/images/voiceactors/1/79885.jpg?s=24f06cc2568f5fc284b2304856f14bee 1x, https://cdn.myanimelist.net/r/84x124/images/voiceactors/1/79885.jpg?s=591384c994153f686b31a1b500987a61 2x" height="62" width="42"/>
-# </a>
-# </div>
-# </td>
-# </tr>
 
   def animeCharacters(self, malid):
     data = get(f"{self.BaseUrl}/anime/{malid}/animeName/characters")
