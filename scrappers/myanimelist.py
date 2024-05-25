@@ -11,21 +11,25 @@ class mal:
     soup = BeautifulSoup(data.text, "html.parser")
 
     songs = soup.select(".js-theme-songs")
-    opening = songs[0].select("table")[1].select("tr")
-    ending = songs[1].select("table")[0].select("tr")
-    
-    openingSongs = [{"name" : x.select("td")[1].text, 
-                     "spotify": x.select("td")[1].select("input")[0]["value"],
-                     "youtube": x.select("td")[1].select("input")[3]["value"]} 
-                   for x in opening]
-    
-    endingSongs = [{"name" : x.select("td")[1].text, 
-                     "spotify": x.select("td")[1].select("input")[0]["value"],
-                     "youtube": x.select("td")[1].select("input")[3]["value"]} 
-                   for x in ending]
+    try:
+      opening = songs[0].select("table")[1].select("tr")
+      openingSongs = [{"name" : x.select("td")[1].text, 
+                      "spotify": x.select("td")[1].select("input")[0]["value"],
+                      "youtube": x.select("td")[1].select("input")[3]["value"]} 
+                    for x in opening]
+    except: 
+      openingSongs = []
+
+    try:
+      ending = songs[1].select("table")[0].select("tr")
+      endingSongs = [{"name" : x.select("td")[1].text, 
+                      "spotify": x.select("td")[1].select("input")[0]["value"],
+                      "youtube": x.select("td")[1].select("input")[3]["value"]} 
+                    for x in ending]
+    except: 
+      endingSongs = []
 
     related_animes = soup.select(".related-entries .entries-tile .entry")
-    print(related_animes)
     related_animes_json = [{"type": x.select_one(".relation").text,
                             "img": x.select_one(".image img")["data-src"],
                             "link": x.select_one(".image a")["href"],
