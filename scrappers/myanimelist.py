@@ -25,11 +25,12 @@ class mal:
                    for x in ending]
 
     related_animes = soup.select(".related-entries .entries-tile .entry")
+    print(related_animes)
     related_animes_json = [{"type": x.select_one(".relation").text,
                             "img": x.select_one(".image img")["data-src"],
                             "link": x.select_one(".image a")["href"],
                             "name": x.select_one(".title").text}
-                          for x in related_animes if len(str(x)) > 40]
+                          for x in related_animes if x.select_one(".relation") != None]
 
     jsonData = { 
       "mal_id" : int(id),
