@@ -47,7 +47,7 @@ def urlParser(url):
   protocol = url.split("://")[0]
   urldict = {
     "protocol" : protocol,
-    "hostname" : url.strip(protocol+"://").split("/")[0],
+    "hostname" : url.split("://")[1].split("/")[0],
     "params" : [{ x.split("=")[0] : x.split("=")[1]} for x in url.split("?")[1].split("&")]
   }
   return urldict
