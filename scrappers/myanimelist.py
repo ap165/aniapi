@@ -169,7 +169,7 @@ class mal:
 ##   type "", "airing", "upcoming", "tv", "movie", "ova", "ona", "special", "bypopularity", "favorite"  
 ##  url  https://myanimelist.net/topanime.php
   def topAnime(self, type, page):
-    url = f"{self.BaseUrl}/topanime.php?type={type}"
+    url = f"{self.BaseUrl}/topanime.php?type={type}&limit={50*(int(page) - 1)}"
     data = get(url)
     soup = BeautifulSoup(data.text, "html.parser")
     next = soup.select(".pagination .next")
@@ -177,7 +177,7 @@ class mal:
     pagination = {
       "next_page": (False if len(next) == 0 else True),
       "prev_page": (False if len(prev) == 0 else True),
-      "page": page
+      "page": int(page)
     }
     animes = soup.select(".ranking-list")
     data_dict = {
