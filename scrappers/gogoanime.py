@@ -33,13 +33,14 @@ class gogo:
   def get_anime_info(self, gogoid): ### get anime imfo from gogo id ###
     base_url = self.BASE_URL
     data = requests.get(f"{base_url}/anime/{gogoid}")
+    print(f"{base_url}/anime/{gogoid}")
     html = BeautifulSoup(data.text, "lxml")
 
     anime_id = html.select("#movie_id")[0]["value"]
     # print(anime_id)
     # anime_name = html.select("#alias_anime")[0]["value"]
     # epis_data = requests.get(f"{self.BASE_AJAX_URL}/ajax/load-list-episode?ep_start=0&ep_end=9999&id={anime_id}&alias={anime_name}")
-    epis_data = requests.get(f"{self.BASE_AJAX_URL}/ajax/load-list-episode?ep_start=0&ep_end=9999&id={anime_id}")
+    epis_data = requests.get(f"{self.BASE_AJAX_URL}/anime/load-list-episode?ep_start=0&ep_end=9999&id={anime_id}")
     epis = BeautifulSoup(epis_data.content, 'lxml')
     eparr = [x["href"].replace(" /", "") for x in epis.select("a")][::-1]
 
@@ -65,4 +66,4 @@ class gogo:
 
 
 if __name__ == "__main__":
-  print(gogo().get_episode_servers("naruto-shippuden-episode-1"))
+  print(gogo().get_anime_info("naruto-shippuden"))
